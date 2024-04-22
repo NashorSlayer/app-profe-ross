@@ -4,7 +4,7 @@ from pydantic import BaseModel #de fastapi importamos BaseModel
 
 #creamos la clase User que hereda de BaseModel
 class User(BaseModel):
-    user_id: Optional[str]
+    user_id: Optional[int]
     email: str
     name: str
     last_name: str

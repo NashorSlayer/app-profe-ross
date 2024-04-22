@@ -11,6 +11,7 @@ url_sql = f'mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_po
 
 # create engine and connection
 engine = create_engine(url_sql)
+
 meta = MetaData()
 
 
