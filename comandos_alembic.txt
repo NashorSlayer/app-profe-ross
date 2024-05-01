@@ -1,0 +1,10 @@
+//COMANDOS RAPIDOS ALEMBIC
+
+- Migraciones 
+    alembic revision -m "descripcion corta"
+
+- Upgrade 
+    alembic upgade head --sql => muestra lo que sucederia sin emitir codigo sql
+    alembic upgrade head
+
+- Downgrade

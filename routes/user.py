@@ -26,8 +26,9 @@ def get_user(id: int):
 def create_user(user:User):
     new_user = {"email":user.email,"name":user.name,"last_name":user.last_name}
     new_user["password"] = f.encrypt(user.password.encode("utf-8"))
-    result = conn.execute(user.insert().values(new_user))
-    return conn.execute(user.select().where(user.c.id==result.lastrowid)).first()
+    result = conn.execute(users.insert().values(new_user))
+    print(result)
+    return "hola mundo"
 
 @user.delete(ruta_user+"/{user_id}")
 def delete_user(user_id:int):
