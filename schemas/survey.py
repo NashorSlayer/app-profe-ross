@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from schemas.user import User
+
 
 class Survey (BaseModel):
     survey_id: int | None = None
@@ -8,4 +10,4 @@ class Survey (BaseModel):
     time_range_end: str
     answer_time_init: str
     answer_time_end: str
-    user_id: int
+    User: User

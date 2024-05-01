@@ -28,6 +28,5 @@ def upgrade() -> None:
     Column("password", VARCHAR(255), nullable=False),
 )
 
-
 def downgrade() -> None:
     op.drop_table("user")

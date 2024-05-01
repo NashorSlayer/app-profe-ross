@@ -7,4 +7,4 @@ class User(BaseModel):
     email: str
     name: str
     last_name: str
-    password:str
+    password: str
