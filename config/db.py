@@ -16,3 +16,12 @@ engine = create_engine(url_sql, echo=True)
 Session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 metadata = Base.metadata
+
+
+#Dependency
+def get_db():
+    db = Session_local()
+    try:
+        yield db
+    finally:
+        db.close()
