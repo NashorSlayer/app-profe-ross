@@ -1,5 +1,6 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from decouple import config
 
 # mysql settings
@@ -12,11 +13,6 @@ url_sql = f'mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_po
 
 # create engine and connection
 engine = create_engine(url_sql, echo=True)
-
-
-# create metadata
-meta = MetaData()
-
-
-conn = engine.connect()
-
+Session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+metadata = Base.metadata

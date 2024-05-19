@@ -1,10 +1,9 @@
-from sqlalchemy import Table, Column
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy.sql.sqltypes import Integer, String
-from config.db import meta
+from config.db import Base
 
 # Define the table
-areas = Table(
-    "area",meta,
-    Column("area_id", Integer, primary_key=True),
-    Column("name", String(255)),
-)
+class Area(Base):
+    _tablename_ = 'area'
+    id = Mapped[int] = mapped_column(Integer, primary_key=True)
+    name = Mapped[str] = mapped_column(String(50), nullable=False)

@@ -1,30 +1,30 @@
-"""create area table
+"""create areas table
 
-Revision ID: 1045b8440656
-Revises: 1b94371c4f05
-Create Date: 2024-05-01 09:56:33.185760
+Revision ID: 8cbcefb1c447
+Revises: 
+Create Date: 2024-05-19 01:38:29.325351
 
 """
 from typing import Sequence, Union
 
 from alembic import op
-from sqlalchemy import INTEGER, VARCHAR, Column
+from sqlalchemy import Column, INTEGER, VARCHAR
 
 
 # revision identifiers, used by Alembic.
-revision: str = '1045b8440656'
-down_revision: Union[str, None] = '1b94371c4f05'
+revision: str = '8cbcefb1c447'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
     op.create_table(
-        "area",
-        Column("area_id", INTEGER, primary_key=True),
+        "areas",
+        Column("id", INTEGER, primary_key=True),
         Column("name", VARCHAR(255), nullable=False),
     )
 
 
 def downgrade() -> None:
-    op.drop_table("area")
+    op.drop_table("areas")
