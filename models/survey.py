@@ -4,7 +4,7 @@ from config.db import Base
 
 # Define the table
 class Survey(Base):
-    __tablename__ = 'survey'
+    __tablename__ = 'surveys'
     id = Mapped[int] = mapped_column(Integer, primary_key=True)
     name = Mapped[str] = mapped_column(String(50), nullable=False)
     description = Mapped[str] = mapped_column(String(255), nullable=False)
