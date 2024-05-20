@@ -4,6 +4,9 @@ from schemas.area import Area
 
 
 class Survey (BaseModel):
-    survey_area_id: int | None = None
+    id: int | None = None
     Survey: Survey
     Area: Area
+
+    class Config:
+        orm_mode = True

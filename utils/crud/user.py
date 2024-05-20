@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from schemas.user import User
+from schemas.user import User as SchemaUser
 from models.user import User as ModelUser
 
 
@@ -15,10 +15,17 @@ def get_users(db: Session):
 def get_user_by_email(email: str, db: Session):
     return db.query(ModelUser).filter(ModelUser.email == email).first()
 
-def create_user(user: User, db: Session):
+def create_user(user: SchemaUser, db: Session):
     user.password = f.encrypt(user.password.encode())
-    user = ModelUser(**user.dict())
-    db.add(user)
+    
+    #parsing info to ModelUser
+    db_user = ModelUser(
+        email=user.email, 
+        password=user.password,
+        name=user.name,
+        last_name=user.last_name
+        )
+    db.add(db_user)
     db.commit()
-    db.refresh(user)
-    return user
+    db.refresh(db_user)
+    return db_user

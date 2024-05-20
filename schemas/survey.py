@@ -3,7 +3,7 @@ from schemas.user import User
 
 
 class Survey (BaseModel):
-    survey_id: int | None = None
+    id: int | None = None
     name: str
     description: str
     time_range_init: str
@@ -11,3 +11,7 @@ class Survey (BaseModel):
     answer_time_init: str
     answer_time_end: str
     User: User
+
+    class Config:
+        orm_mode = True
+        
