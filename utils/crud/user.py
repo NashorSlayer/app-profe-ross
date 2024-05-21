@@ -10,7 +10,7 @@ key = Fernet.generate_key() #genera una clave para cifrar
 f = Fernet(key) #cifra la clave
 
 def get_users(db: Session):
-    return db.query(ModelUser).all()
+    return db.query(ModelUser).limit(10).all()
 
 def get_user_by_email(email: str, db: Session):
     return db.query(ModelUser).filter(ModelUser.email == email).first()
@@ -36,7 +36,7 @@ def create_user(user: SchemaUser, db: Session):
 def update_user(user_id: int, user: SchemaUser, db: Session):
     db_user = db.query(ModelUser).filter(ModelUser.id == user_id).first()
     if user.password != None:
-        print(user.password)
+        print(user.password) # only dev enviroment
         user.password = f.encrypt(user.password.encode())
         db_user.password = user.password
     if user.email != None:
