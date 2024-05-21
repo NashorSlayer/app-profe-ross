@@ -12,3 +12,11 @@ class User(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UserUpdate(User):
+    email: str | None = None
+    name: str | None = None
+    last_name: str | None = None
+    password: str | None = None
+    
