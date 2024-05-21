@@ -1,43 +1,52 @@
-from fastapi import APIRouter, Response
-from starlette.status import HTTP_204_NO_CONTENT
+from fastapi import APIRouter, Depends, HTTPException
 
-from config.db import conn
-from models.user import users #users es la tabla que se creo en el archivo models/user.py
-from schemas.user import User
-
-
-from cryptography.fernet import Fernet # permite generar una funcion pa cifrar
-
-key = Fernet.generate_key() #genera una clave para cifrar
-f = Fernet(key) #cifra la clave
+from schemas.user import User,UserUpdate
+from utils.crud.user import (
+    get_users,
+    create_user,
+    get_user_by_email, 
+    get_user_by_id,
+    update_user,
+    delete_user
+    )
+from sqlalchemy.orm import Session
+from config.db import get_db
 
 user = APIRouter()
-ruta_user = "/users"
+user_path = '/user/'
+create_user_path = '/user/create/'
+patch_user_path = '/user/update/{user_id}/'
+delete_user_path = '/user/delete/{user_id}/'
 
-@user.get(ruta_user)
-def get_user():
-    return conn.execute(users.select()).fetchall()
 
-@user.get(ruta_user+"/{user_id}")
-def get_user(id: int):
-    return conn.execute(users.select().where(users.c.id==id)).first()
+#messages
+user_not_found = 'User not found'
+user_already_registered = 'Email already registered'
 
-@user.post(ruta_user)
-def create_user(user:User):
-    new_user = {"email":user.email,"name":user.name,"last_name":user.last_name}
-    new_user["password"] = f.encrypt(user.password.encode("utf-8"))
-    result = conn.execute(users.insert().values(new_user))
-    print(result)
-    return "hola mundo"
 
-@user.delete(ruta_user+"/{user_id}")
-def delete_user(user_id:int):
-    conn.execute(users.delete().where(users.c.id==user_id))
-    return Response(status_code=HTTP_204_NO_CONTENT)
+@user.get(user_path ,response_model=list[User])
+def get_users_route(db:Session = Depends(get_db)):
+    users = get_users(db)
+    return users
 
-@user.put(ruta_user+"/{user_id}")
-def update_user(user_id:int,user:User):
-    new_user = {"email":user.email,"name":user.name,"last_name":user.last_name}
-    new_user["password"] = f.encrypt(user.password.encode("utf-8"))
-    conn.execute(users.update().values(new_user).where(users.c.id==user_id))
-    return conn.execute(users.select().where(users.c.id==user_id)).first()
+@user.post(create_user_path, response_model=User)
+def create_user_route(user: User, db:Session = Depends(get_db)):
+    db_user = get_user_by_email(user.email, db)
+    if db_user:
+        raise HTTPException(status_code=400, detail=user_already_registered)
+    return create_user(user, db)
+
+@user.patch(patch_user_path, response_model=User)
+def update_user_route(user_id: int, user:UserUpdate, db:Session = Depends(get_db)):
+    db_user = get_user_by_id(user_id, db)
+    if db_user == None:
+        raise HTTPException(status_code=400, detail=user_not_found)
+    return update_user(user_id, user, db)
+
+@user.delete(delete_user_path, status_code=200)
+def delete_user_route(user_id: int, db:Session = Depends(get_db)):
+    db_user = get_user_by_id(user_id, db)
+    if db_user == None:
+        raise HTTPException(status_code=400, detail=user_not_found)
+    message = delete_user(user_id,db)
+    return {'message': message}

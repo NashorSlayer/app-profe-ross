@@ -2,5 +2,9 @@
 from pydantic import BaseModel
 
 class Area (BaseModel):
-    area_id: int | None = None
+    id: int | None = None
     name: str
+
+    class Config:
+        orm_mode = True
+        

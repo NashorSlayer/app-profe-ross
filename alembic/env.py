@@ -1,24 +1,21 @@
 from logging.config import fileConfig
 
-from decouple import config as conf
-
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
 
+from decouple import config as conf
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# here we allow ourselves to pass interpolation vars to alembic.ini
-# fron the host env
 section = config.config_ini_section
 config.set_section_option(section, "MYSQL_USER", conf('MYSQL_USER'))
 config.set_section_option(section, "MYSQL_PASSWORD", conf('MYSQL_PASSWORD'))
 config.set_section_option(section, "MYSQL_HOST", conf('MYSQL_HOST'))
 config.set_section_option(section, "MYSQL_DB", conf('MYSQL_DB'))
-
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
