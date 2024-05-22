@@ -12,7 +12,9 @@ from utils.crud.user import (
 from sqlalchemy.orm import Session
 from config.db import get_db
 
-user = APIRouter()
+user = APIRouter(
+    tags=['users']
+)
 user_path = '/user/'
 create_user_path = '/user/create/'
 patch_user_path = '/user/update/{user_id}/'
