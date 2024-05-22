@@ -13,11 +13,13 @@ from config.db import get_db
 from schemas.area import Area as SchemaArea
 
 
-area = APIRouter()
+area = APIRouter(
+    tags=['areas']
+)
 area_path = '/area/'
 area_create_path = area_path+'create/'
 area_update_path = area_path+'update/{area_id}/'
-area_delete_path = area_path+'delete/{area_id}/'
+area_delete_path = area_path+'delete/{area_id}/' 
 
 
 #messages
