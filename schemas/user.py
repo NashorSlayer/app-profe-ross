@@ -1,21 +1,21 @@
-
-from pydantic import BaseModel#de fastapi importamos BaseModel
+#de fastapi importamos BaseModel
+from pydantic import BaseModel,Field, EmailStr
 
 
 #creamos la clase User que hereda de BaseModel
 class User(BaseModel):
     id: int | None = None
-    email: str
+    email: EmailStr
     name: str
     last_name: str
     password: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserUpdate(User):
-    email: str | None = None
+    email: EmailStr | None = None
     name: str | None = None
     last_name: str | None = None
     password: str | None = None

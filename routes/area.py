@@ -6,6 +6,9 @@ from utils.crud.area import (
     update_area, 
     delete_area 
 )
+from utils.constants import ouath2_scheme
+
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -27,7 +30,7 @@ area_not_found = 'Area not found'
 area_already_registered = 'Area already registered'
 
 @area.get(area_path, response_model=list[SchemaArea])
-def get_areas_route(db:Session = Depends(get_db)):
+async def get_areas_route(db:Session = Depends(get_db)):
     areas = get_areas(db)
     return areas
 

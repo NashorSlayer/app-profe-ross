@@ -13,5 +13,5 @@ class Survey (BaseModel):
     User: User
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         

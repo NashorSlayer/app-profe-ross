@@ -3,10 +3,10 @@ from schemas.survey import Survey
 from schemas.area import Area
 
 
-class Survey (BaseModel):
+class Survey_areas (BaseModel):
     id: int | None = None
     Survey: Survey
     Area: Area
 
     class Config:
-        orm_mode = True
+        from_attributes = True

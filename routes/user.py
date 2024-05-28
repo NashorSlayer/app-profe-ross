@@ -9,6 +9,11 @@ from utils.crud.user import (
     update_user,
     delete_user
     )
+from utils.constants import ouath2_scheme
+
+from typing import Annotated
+
+
 from sqlalchemy.orm import Session
 from config.db import get_db
 
@@ -46,7 +51,7 @@ def update_user_route(user_id: int, user:UserUpdate, db:Session = Depends(get_db
     return update_user(user_id, user, db)
 
 @user.delete(delete_user_path, status_code=200)
-def delete_user_route(user_id: int, db:Session = Depends(get_db)):
+def delete_user_route(token:Annotated[str,Depends(ouath2_scheme)],user_id: int, db:Session = Depends(get_db)):
     db_user = get_user_by_id(user_id, db)
     if db_user == None:
         raise HTTPException(status_code=404, detail=user_not_found)
